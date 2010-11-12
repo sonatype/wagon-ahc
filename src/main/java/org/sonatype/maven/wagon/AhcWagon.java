@@ -128,16 +128,7 @@ public class AhcWagon
         {
             builder.setUserAgent( httpHeaders.getProperty( "User-Agent" ) );
         }
-        
-        try
-        {
-            //builder.setSSLEngine( SslUtils.getSSLEngine() );
-        }
-        catch ( Exception e )
-        {
-            throw new ConnectionException( "Failed to setup SSL engine: " + e.getMessage(), e );
-        }
-        
+                
         httpClient = new AsyncHttpClient( builder.build() );
     }
 
@@ -253,11 +244,14 @@ public class AhcWagon
                 case HttpURLConnection.HTTP_OK:
                 case HttpURLConnection.HTTP_NOT_MODIFIED:
                     break;
+                    
                 case HttpURLConnection.HTTP_UNAUTHORIZED:
                 case HttpURLConnection.HTTP_FORBIDDEN:
                     throw new AuthorizationException( "Access denied to: " + url + " (" + statusCode + ")" );
+                
                 case HttpURLConnection.HTTP_NOT_FOUND:
                     throw new ResourceDoesNotExistException( "Unable to locate resource in repository" );
+                
                 default:
                     throw new TransferFailedException( "Error transferring file, server returned status code " + statusCode );
             }
@@ -341,7 +335,7 @@ public class AhcWagon
 
             BoundRequestBuilder builder = httpClient.preparePut( url );
             addHeaders( builder );
-                        
+                                    
             PutOutputStream pos = new PutOutputStream( builder, url, resource.getContentLength() );
 
             outputData.setOutputStream( pos );
