@@ -22,37 +22,37 @@
     <component>
       <role>org.apache.maven.wagon.Wagon</role>
       <role-hint>http</role-hint>
-      <implementation>org.sonatype.maven.wagon.AhcWagon2</implementation>
+      <implementation>org.sonatype.maven.wagon.AhcWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
     <component>
       <role>org.apache.maven.wagon.Wagon</role>
       <role-hint>https</role-hint>
-      <implementation>org.sonatype.maven.wagon.AhcWagon2</implementation>
+      <implementation>org.sonatype.maven.wagon.AhcWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
     <component>
       <role>org.apache.maven.wagon.Wagon</role>
       <role-hint>dav</role-hint>
-      <implementation>org.sonatype.maven.wagon.AhcWagon2</implementation>
+      <implementation>org.sonatype.maven.wagon.AhcWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
     <component>
       <role>org.apache.maven.wagon.Wagon</role>
       <role-hint>davs</role-hint>
-      <implementation>org.sonatype.maven.wagon.AhcWagon2</implementation>
+      <implementation>org.sonatype.maven.wagon.AhcWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
     <component>
       <role>org.apache.maven.wagon.Wagon</role>
       <role-hint>dav+http</role-hint>
-      <implementation>org.sonatype.maven.wagon.AhcWagon2</implementation>
+      <implementation>org.sonatype.maven.wagon.AhcWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
     <component>
       <role>org.apache.maven.wagon.Wagon</role>
       <role-hint>dav+https</role-hint>
-      <implementation>org.sonatype.maven.wagon.AhcWagon2</implementation>
+      <implementation>org.sonatype.maven.wagon.AhcWagon</implementation>
       <instantiation-strategy>per-lookup</instantiation-strategy>
     </component>
   </components>

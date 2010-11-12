@@ -26,7 +26,7 @@ import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.Request;
 import org.mortbay.jetty.handler.AbstractHandler;
 import org.mortbay.jetty.servlet.Context;
-import org.sonatype.maven.wagon.AhcWagon2;
+import org.sonatype.maven.wagon.AhcWagon;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class AhcHttpWagonTest
     @Override
     protected void setHttpHeaders( StreamingWagon wagon, Properties properties )
     {
-        ( (AhcWagon2) wagon ).setHttpHeaders( properties );
+        ( (AhcWagon) wagon ).setHttpHeaders( properties );
     }
 
     public void testGetRedirectFromHttpToHttps()

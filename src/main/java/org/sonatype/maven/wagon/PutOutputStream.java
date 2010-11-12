@@ -2,10 +2,12 @@ package org.sonatype.maven.wagon;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.concurrent.ExecutionException;
 
-import com.ning.http.client.Response;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
+import com.ning.http.client.Request;
+import com.ning.http.client.Response;
 
 public class PutOutputStream
     extends ByteArrayOutputStream
@@ -37,14 +39,15 @@ public class PutOutputStream
             throw new IllegalStateException( "Request already sent" );
         }
 
-        if ( buf.length == count )
+        builder.setBody( new Request.EntityWriter()
         {
-            builder.setBody( buf );
-        }
-        else
-        {
-            builder.setBody( toByteArray() );
-        }
+            public void writeEntity( OutputStream out )
+                throws IOException
+            {
+                writeTo( out );
+            }
+        } );        
+                
         try
         {
             response = builder.execute().get();

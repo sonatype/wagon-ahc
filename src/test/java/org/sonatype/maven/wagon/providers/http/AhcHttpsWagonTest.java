@@ -24,7 +24,7 @@ import org.apache.maven.wagon.repository.Repository;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Handler;
 import org.mortbay.jetty.servlet.Context;
-import org.sonatype.maven.wagon.AhcWagon2;
+import org.sonatype.maven.wagon.AhcWagon;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Properties;
@@ -41,7 +41,7 @@ public class AhcHttpsWagonTest
     @Override
     protected void setHttpHeaders( StreamingWagon wagon, Properties properties )
     {
-        ( (AhcWagon2) wagon ).setHttpHeaders( properties );
+        ( (AhcWagon) wagon ).setHttpHeaders( properties );
     }
 
     public void testClientAuthenticationWithCertificates()
