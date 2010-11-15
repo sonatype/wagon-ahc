@@ -1,5 +1,6 @@
 package org.sonatype.maven.wagon;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -384,4 +385,22 @@ public class AhcWagon
             throw new TransferFailedException( "Error transferring file", e );
         }
     }
+
+    public void put( File source, String resourceName )
+        throws TransferFailedException, ResourceDoesNotExistException, AuthorizationException
+    {
+        Resource resource = new Resource( resourceName );
+
+        firePutInitiated( resource, source );
+
+        resource.setContentLength( source.length() );
+
+        resource.setLastModified( source.lastModified() );
+
+        OutputStream os = getOutputStream( resource );
+
+        checkOutputStream( resource, os );
+
+        putTransfer( resource, source, os, true );
+    } 
 }
