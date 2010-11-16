@@ -21,29 +21,53 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
     <version>6</version>
-  </parent> 
+  </parent>
+
   <groupId>org.sonatype.maven</groupId>
   <artifactId>wagon-ahc</artifactId>
-  <name>Wagon :: AHC</name>
   <version>1.0.0-SNAPSHOT</version>
+
+  <name>Wagon :: AHC</name>
   <description>
+    A wagon provider for HTTP transfers based on the async-http-client.
   </description>
-  
+  <inceptionYear>2010</inceptionYear>
+
+  <organization>
+    <name>Sonatype, Inc.</name>
+    <url>http://www.sonatype.com/</url>
+  </organization>
+
+  <scm>
+    <connection>scm:git:git@github.com:sonatype/wagon-ahc.git</connection>
+    <developerConnection>scm:git:git@github.com:sonatype/wagon-ahc.git</developerConnection>
+    <url>http://github.com/sonatype/wagon-ahc</url>
+  </scm>
+
+  <licenses>
+    <license>
+      <name>Eclipse Public License, Version 1.0</name>
+      <url>http://www.eclipse.org/legal/epl-v10.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <dependencies>
     <dependency>
       <groupId>com.ning</groupId>
       <artifactId>async-http-client</artifactId>
       <version>1.4.0-SNAPSHOT</version>
     </dependency>
-    <dependency>                                                                                                                     
-      <groupId>org.apache.maven.wagon</groupId>                                                                                      
-      <artifactId>wagon-provider-api</artifactId>                                                                                    
-      <version>1.0-beta-6</version>                                                                                                  
-    </dependency>         
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-provider-api</artifactId>
+      <version>1.0-beta-6</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -55,12 +79,12 @@
       <artifactId>plexus-container-default</artifactId>
       <version>1.5.1</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
       <version>2.0.0</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
@@ -78,10 +102,37 @@
           <artifactId>easymock</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>    
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <signature>
+            <groupId>org.codehaus.mojo.signature</groupId>
+            <artifactId>java15</artifactId>
+            <version>1.0</version>
+          </signature>
+        </configuration>
+        <executions>
+          <execution>
+            <id>check-java-1.5-compat</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</forgeReleaseUrl>
   </properties>
 </project>
