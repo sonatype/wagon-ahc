@@ -334,6 +334,10 @@ public class AhcWagon
         {
             throw new TransferFailedException( "Transfer was aborted by client", e );
         }
+        catch ( RuntimeException e )
+        {
+            throw new TransferFailedException( "Error transferring file: " + e.getMessage(), e );
+        }
     }
 
     @Override
