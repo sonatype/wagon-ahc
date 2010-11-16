@@ -63,7 +63,7 @@ public class UrlUtils
         int idx = repositoryUrl.indexOf( "://" );
         if ( idx < 0 )
         {
-            return repositoryUrl + repositoryUrl;
+            return repositoryUrl + resourceUrl;
         }
 
         String protocol = repositoryUrl.substring( 0, idx );
