@@ -228,11 +228,15 @@ public class AhcWagon
         }
         catch ( InterruptedException e )
         {
-            throw new TransferFailedException( "Transfer was aborted by client", e );
+            throw new TransferFailedException( "Transfer was aborted by client: " + e.getMessage(), e );
         }
         catch ( ExecutionException e )
         {
-            throw new TransferFailedException( "Transfer was aborted by client", e );
+            throw new TransferFailedException( "Transfer was aborted by client: " + e.getMessage(), e );
+        }
+        catch ( RuntimeException e )
+        {
+            throw new TransferFailedException( "Error transferring file: " + e.getMessage(), e );
         }
     }
 
