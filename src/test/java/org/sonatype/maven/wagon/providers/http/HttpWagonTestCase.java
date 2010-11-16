@@ -520,7 +520,7 @@ public abstract class HttpWagonTestCase
         return content;
     }
 
-    public void xxxtestGetFileThatIsBiggerThanMaxHeap()
+    public void testGetFileThatIsBiggerThanMaxHeap()
         throws Exception
     {
         alert( "\n\nRunning test: " + getName() );
@@ -1367,7 +1367,7 @@ public abstract class HttpWagonTestCase
         }
     }
 
-    public void xxxtestGracefulFailureUnderMultithreadedMisuse()
+    public void testGracefulFailureUnderMultithreadedMisuse()
         throws Exception
     {
         alert( "\n\nRunning test: " + getName() );
@@ -1383,6 +1383,7 @@ public abstract class HttpWagonTestCase
         setupWagonTestingFixtures();
 
         final StreamingWagon wagon = (StreamingWagon) getWagon();
+        wagon.setTimeout( 1000 );
 
         wagon.connect( new Repository( "id", getTestRepositoryUrl() ) );
 
