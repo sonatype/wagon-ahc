@@ -29,8 +29,6 @@ class GetExchange
 
     private long lastModified;
 
-    private String contentEncoding;
-
     private PipedErrorInputStream inputStream;
 
     private PipedOutputStream outputStream;
@@ -124,16 +122,6 @@ class GetExchange
     public int getContentLength()
     {
         return contentLength;
-    }
-
-    public void setContentEncoding( String contentEncoding )
-    {
-        this.contentEncoding = contentEncoding;
-    }
-
-    public boolean isGzipEncoding()
-    {
-        return "gzip".equalsIgnoreCase( contentEncoding );
     }
 
     public InputStream getInputStream()

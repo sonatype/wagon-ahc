@@ -16,7 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import java.util.zip.GZIPInputStream;
 
 import org.apache.maven.wagon.ConnectionException;
 import org.apache.maven.wagon.InputData;
@@ -133,6 +132,7 @@ public class AhcWagon
         builder.setFollowRedirects( maxRedirections > 0 );
         builder.setMaximumNumberOfRedirects( maxRedirections );
         builder.setUserAgent( "Apache-Maven" );
+        builder.setCompressionEnabled( true );
         
         if ( httpHeaders != null && httpHeaders.getProperty( "User-Agent" ) != null )
         {
@@ -278,14 +278,7 @@ public class AhcWagon
                     throw new TransferFailedException( "Error transferring file, server returned status code " + statusCode );
             }
 
-            if ( exchange.isGzipEncoding() )
-            {
-                inputData.setInputStream( new GZIPInputStream( exchange.getInputStream() ) );
-            }
-            else
-            {
-                inputData.setInputStream( exchange.getInputStream() );
-            }
+            inputData.setInputStream( exchange.getInputStream() );
             resource.setLastModified( exchange.getLastModified() );
             resource.setContentLength( exchange.getContentLength() );
         }

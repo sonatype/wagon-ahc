@@ -42,7 +42,6 @@ class GetExchangeHandler
 
         exchange.setLastModified( h.getFirstValue( "Last-Modified" ) );
         exchange.setContentLength( h.getFirstValue( "Content-Length" ) );
-        exchange.setContentEncoding( h.getFirstValue( "Content-Encoding" ) );
 
         exchange.start();
 
