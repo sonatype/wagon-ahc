@@ -38,6 +38,7 @@ import com.ning.http.client.ProxyServer;
 import com.ning.http.client.Realm;
 import com.ning.http.client.Realm.RealmBuilder;
 import com.ning.http.client.Response;
+import com.ning.http.client.providers.netty.NettyAsyncHttpProvider;
 
 public class AhcWagon
     extends StreamWagon
@@ -137,8 +138,11 @@ public class AhcWagon
         {
             builder.setUserAgent( httpHeaders.getProperty( "User-Agent" ) );
         }
-                
-        httpClient = new AsyncHttpClient( builder.build() );
+
+        AsyncHttpClientConfig config = builder.build();
+
+        // NOTE: Explicitly specify provider to workaround class loading bug in ahc:1.4.0
+        httpClient = new AsyncHttpClient( new NettyAsyncHttpProvider( config ), config );
     }
 
     @Override
