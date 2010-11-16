@@ -253,9 +253,14 @@ public class AhcWagon
             BoundRequestBuilder builder = httpClient.prepareGet( url );
             builder.setFollowRedirects( true );
             addHeaders( builder );
-            Response response = builder.execute().get();
-                        
-            int statusCode = response.getStatusCode();
+
+            GetExchange exchange = new GetExchange( httpClient );
+
+            builder.execute( new GetExchangeHandler( exchange ) );
+
+            exchange.await();
+
+            int statusCode = exchange.getStatusCode();
             switch ( statusCode )
             {
                 case HttpURLConnection.HTTP_OK:
@@ -273,54 +278,16 @@ public class AhcWagon
                     throw new TransferFailedException( "Error transferring file, server returned status code " + statusCode );
             }
 
-            String contentEncoding = response.getHeader( "Content-Encoding" );
-            boolean isGZipped = contentEncoding == null ? false : "gzip".equalsIgnoreCase( contentEncoding );
-
-            if ( isGZipped )
+            if ( exchange.isGzipEncoding() )
             {
-                inputData.setInputStream( new GZIPInputStream( response.getResponseBodyAsStream() ) );
+                inputData.setInputStream( new GZIPInputStream( exchange.getInputStream() ) );
             }
             else
             {
-                inputData.setInputStream( response.getResponseBodyAsStream() );
+                inputData.setInputStream( exchange.getInputStream() );
             }
-            
-            String contentLengthHeader = response.getHeader( "Content-Length" );
-            
-            if ( contentLengthHeader != null )
-            {
-                try
-                {
-                    long contentLength = Integer.valueOf( contentLengthHeader ).intValue();
-
-                    resource.setContentLength( contentLength );
-                }
-                catch ( NumberFormatException e )
-                {
-                    fireTransferDebug( "error parsing content length header '" + contentLengthHeader + "' "
-                        + e );
-                }
-            }            
-
-            String lastModifiedHeader = response.getHeader( "Last-Modified" );
-
-            long lastModified = 0;
-
-            if ( lastModifiedHeader != null )
-            {
-                try
-                {
-                    lastModified = DateUtil.parseDate( lastModifiedHeader ).getTime();
-
-                    resource.setLastModified( lastModified );
-                }
-                catch ( DateParseException e )
-                {
-                    fireTransferDebug( "Unable to parse last modified header" );
-                }
-
-                fireTransferDebug( "last-modified = " + lastModifiedHeader + " (" + lastModified + ")" );
-            }
+            resource.setLastModified( exchange.getLastModified() );
+            resource.setContentLength( exchange.getContentLength() );
         }
         catch ( URISyntaxException e )
         {
@@ -333,14 +300,6 @@ public class AhcWagon
         catch ( InterruptedException e )
         {
             throw new TransferFailedException( "Transfer was aborted by client: " + e.getMessage(), e );
-        }
-        catch ( ExecutionException e )
-        {
-            throw new TransferFailedException( "Transfer was aborted by client: " + e.getMessage(), e );
-        }
-        catch ( RuntimeException e )
-        {
-            throw new TransferFailedException( "Error transferring file: " + e.getMessage(), e );
         }
     }
 
