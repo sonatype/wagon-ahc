@@ -76,8 +76,8 @@ public class AhcWagon
             realmBuilder = (new Realm.RealmBuilder())
                 .setPrincipal( username )
                 .setPassword( password )
-                .setUsePreemptiveAuth( true )
-                .setEnconding( "UTF-8" );      
+                .setUsePreemptiveAuth( false )
+                .setEnconding( "UTF-8" );
             
             builder.setRealm( realmBuilder.build() );
         }        
