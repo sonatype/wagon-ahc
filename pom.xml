@@ -19,7 +19,7 @@ http://www.eclipse.org/legal/epl-v10.html
 
   <groupId>org.sonatype.maven</groupId>
   <artifactId>wagon-ahc</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>Wagon :: AHC</name>
   <description>
