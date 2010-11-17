@@ -260,6 +260,11 @@ public class AhcWagon
 
             exchange.await();
 
+            if ( exchange.getError() != null )
+            {
+                throw (IOException) new IOException( exchange.getError().getMessage() ).initCause( exchange.getError() );
+            }
+
             int statusCode = exchange.getStatusCode();
             switch ( statusCode )
             {
