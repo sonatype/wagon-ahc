@@ -322,33 +322,14 @@ public class AhcWagon
     @Override
     protected void finishPutTransfer( Resource resource, InputStream input, OutputStream output )
         throws TransferFailedException, AuthorizationException, ResourceDoesNotExistException
-    {        
+    {
         PutOutputStream pos = (PutOutputStream) output;
-        
+
         try
         {
             Response response = pos.send();
-            int statusCode = response.getStatusCode();
 
-            switch ( statusCode )
-            {
-                case HttpURLConnection.HTTP_OK:
-                case HttpURLConnection.HTTP_CREATED:
-                case HttpURLConnection.HTTP_ACCEPTED:
-                case HttpURLConnection.HTTP_NO_CONTENT:
-                    break;
-
-                case HttpURLConnection.HTTP_UNAUTHORIZED:
-                case HttpURLConnection.HTTP_FORBIDDEN:
-                    throw new AuthorizationException( "Access denied to: " + pos.getUrl() + " (" + statusCode + ")" );
-
-                case HttpURLConnection.HTTP_NOT_FOUND:
-                    throw new ResourceDoesNotExistException( "File: " + pos.getUrl() + " does not exist" );
-
-                default:
-                    throw new TransferFailedException( "Failed to transfer file: " + pos.getUrl()
-                        + ". Return code is: " + statusCode );
-            }
+            handleStatusCode( response.getStatusCode(), pos.getUrl() );
         }
         catch ( IOException e )
         {
@@ -369,10 +350,73 @@ public class AhcWagon
 
         resource.setLastModified( source.lastModified() );
 
-        OutputStream os = getOutputStream( resource );
+        try
+        {
+            String url = UrlUtils.buildUrl( getRepository().getUrl(), resource.getName() );
 
-        checkOutputStream( resource, os );
+            BoundRequestBuilder builder = httpClient.preparePut( url );
+            addHeaders( builder );
+            builder.setBody( new ProgressingFileBodyGenerator( source, resource, this ) );
 
-        putTransfer( resource, source, os, true );
-    } 
+            Response response = builder.execute().get();
+
+            handleStatusCode( response.getStatusCode(), url );
+
+            firePutCompleted( resource, source );
+        }
+        catch ( URISyntaxException e )
+        {
+            throw new TransferFailedException( "Invalid repository URL", e );
+        }
+        catch ( IOException e )
+        {
+            throw new TransferFailedException( "Error transferring file: " + e.getMessage(), e );
+        }
+        catch ( InterruptedException e )
+        {
+            throw new TransferFailedException( "Transfer was aborted by client: " + e.getMessage(), e );
+        }
+        catch ( ExecutionException e )
+        {
+            throw new TransferFailedException( "Transfer was aborted by client: " + e.getMessage(), e );
+        }
+        catch ( RuntimeException e )
+        {
+            throw new TransferFailedException( "Error transferring file: " + e.getMessage(), e );
+        }
+    }
+
+    private void handleStatusCode( int statusCode, String url )
+        throws TransferFailedException, AuthorizationException, ResourceDoesNotExistException
+    {
+        switch ( statusCode )
+        {
+            case HttpURLConnection.HTTP_OK:
+            case HttpURLConnection.HTTP_CREATED:
+            case HttpURLConnection.HTTP_ACCEPTED:
+            case HttpURLConnection.HTTP_NO_CONTENT:
+                break;
+
+            case HttpURLConnection.HTTP_UNAUTHORIZED:
+            case HttpURLConnection.HTTP_FORBIDDEN:
+                throw new AuthorizationException( "Access denied to: " + url + " (" + statusCode + ")" );
+
+            case HttpURLConnection.HTTP_NOT_FOUND:
+                throw new ResourceDoesNotExistException( "File " + url + " does not exist" );
+
+            default:
+                throw new TransferFailedException( "Failed to transfer file " + url + ". Return code is: " + statusCode );
+        }
+    }
+
+    void firePutStarted( File source, Resource resource )
+    {
+        firePutStarted( resource, source );
+    }
+
+    void fireTransferProgressed( TransferEvent event, int count, byte[] buffer )
+    {
+        fireTransferProgress( event, buffer, count );
+    }
+
 }
