@@ -15,6 +15,8 @@ import java.io.PipedOutputStream;
 import java.util.concurrent.CountDownLatch;
 
 import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.util.DateUtil;
+
 
 class GetExchange
 {
@@ -88,7 +90,7 @@ class GetExchange
             {
                 this.lastModified = DateUtil.parseDate( lastModified ).getTime();
             }
-            catch ( DateParseException e )
+            catch ( DateUtil.DateParseException e )
             {
                 this.lastModified = -1;
             }
