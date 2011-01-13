@@ -557,6 +557,7 @@ public abstract class HttpWagonTestCase
 
         assertTrue( hugeFile.isFile() );
         assertEquals( bytes, hugeFile.length() );
+        hugeFile.delete();
     }
 
     public void testProxiedRequest()
