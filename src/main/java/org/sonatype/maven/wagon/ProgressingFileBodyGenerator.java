@@ -16,7 +16,7 @@ import java.nio.channels.WritableByteChannel;
 import org.apache.maven.wagon.events.TransferEvent;
 import org.apache.maven.wagon.resource.Resource;
 
-import com.ning.http.client.FileBodyGenerator;
+import com.ning.http.client.generators.FileBodyGenerator;
 import com.ning.http.client.RandomAccessBody;
 
 class ProgressingFileBodyGenerator
