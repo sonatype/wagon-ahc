@@ -111,6 +111,7 @@ http://www.eclipse.org/legal/epl-v10.html
         <version>2.7.2</version>
         <configuration>
           <argLine>-Xmx32m</argLine>
+          <redirectTestOutputToFile>${surefire.redirectTestOutputToFile}</redirectTestOutputToFile>
         </configuration>
       </plugin>
       <plugin>
@@ -140,5 +141,6 @@ http://www.eclipse.org/legal/epl-v10.html
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</forgeReleaseUrl>
+    <surefire.redirectTestOutputToFile>true</surefire.redirectTestOutputToFile>
   </properties>
 </project>
