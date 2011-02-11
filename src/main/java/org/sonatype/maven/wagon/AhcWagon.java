@@ -68,10 +68,6 @@ public class AhcWagon
         AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
         RealmBuilder realmBuilder = null;
 
-        /**
-         * TODO: Wagon Authentication interface doesn't allow configuring DIGEST, NTLM and Kerberos Authentication. This
-         * information is missing.
-         */
         if ( authenticationInfo != null )
         {
             String username = authenticationInfo.getUserName();
@@ -133,6 +129,9 @@ public class AhcWagon
         builder.setMaximumNumberOfRedirects( maxRedirections );
         builder.setUserAgent( "Apache-Maven" );
         builder.setCompressionEnabled( true );
+        // TODO: Pooling shoud not be disabled but we do see sporadic failure on Hudson. Let's turn it off
+        // now and see if the sporadic issues are gone.
+        builder.setAllowSslConnectionPool(false);
         
         if ( httpHeaders != null && httpHeaders.getProperty( "User-Agent" ) != null )
         {
