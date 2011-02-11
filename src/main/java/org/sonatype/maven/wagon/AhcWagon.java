@@ -67,7 +67,11 @@ public class AhcWagon
         protocol = UrlUtils.normalizeProtocol( protocol );
         AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
         RealmBuilder realmBuilder = null;
-        
+
+        /**
+         * TODO: Wagon Authentication interface doesn't allow configuring DIGEST, NTLM and Kerberos Authentication. This
+         * information is missing.
+         */
         if ( authenticationInfo != null )
         {
             String username = authenticationInfo.getUserName();
@@ -96,6 +100,10 @@ public class AhcWagon
             int proxyPort = proxyInfo.getPort();
             String proxyNtlmHost = proxyInfo.getNtlmHost();
             String proxyNtlmDomain = proxyInfo.getNtlmDomain();
+
+            if (StringUtils.isNotEmpty( proxyNtlmHost )) {
+                proxyHost = proxyNtlmDomain;
+            }
             
             if ( proxyHost != null )
             {
@@ -110,17 +118,9 @@ public class AhcWagon
                     proxyServer = new ProxyServer( proxyHost, proxyPort );                    
                 }
 
-                if (  StringUtils.isNotEmpty( proxyNtlmDomain ) && StringUtils.isNotEmpty( proxyNtlmHost ) )
+                if ( StringUtils.isNotEmpty( proxyNtlmDomain ) )
                 {
-                    if ( realmBuilder == null )
-                    {
-                        realmBuilder = (new Realm.RealmBuilder());
-                    }
-                    
-                    realmBuilder
-                        .setScheme( Realm.AuthScheme.NTLM)
-                        .setDomain(proxyNtlmDomain)
-                        .setPassword(proxyNtlmHost);
+                    proxyServer.setNtlmDomain(proxyNtlmDomain);
                 }
                 
                 builder.setProxyServer( proxyServer );  
