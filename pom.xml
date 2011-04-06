@@ -95,7 +95,7 @@ http://www.eclipse.org/legal/epl-v10.html
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>0.9.26</version>
+      <version>0.9.28</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
