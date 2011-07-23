@@ -27,7 +27,7 @@ class GetExchange
 
     private int statusCode;
 
-    private int contentLength = -1;
+    private long contentLength = -1;
 
     private long lastModified;
 
@@ -108,7 +108,7 @@ class GetExchange
         {
             try
             {
-                this.contentLength = Integer.parseInt( contentLength );
+                this.contentLength = Long.parseLong( contentLength );
             }
             catch ( NumberFormatException e )
             {
@@ -121,7 +121,7 @@ class GetExchange
         }
     }
 
-    public int getContentLength()
+    public long getContentLength()
     {
         return contentLength;
     }
