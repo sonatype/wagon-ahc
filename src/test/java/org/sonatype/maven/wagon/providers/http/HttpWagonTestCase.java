@@ -687,6 +687,15 @@ public abstract class HttpWagonTestCase
         runTestSecuredGet( authInfo );
     }
 
+    public void testSecuredGetNonAsciiCredentials()
+        throws Exception
+    {
+        AuthenticationInfo authInfo = new AuthenticationInfo();
+        authInfo.setUserName( "user-non-ascii" );
+        authInfo.setPassword( "\u00E4\u00DF" );
+        runTestSecuredGet( authInfo );
+    }
+
     public void runTestSecuredGet( final AuthenticationInfo authInfo )
         throws Exception
     {
@@ -1563,7 +1572,9 @@ public abstract class HttpWagonTestCase
 
             HashUserRealm hashUserRealm = new HashUserRealm( "MyRealm" );
             hashUserRealm.put( "user", "secret" );
+            hashUserRealm.put( "user-non-ascii", "\u00E4\u00DF" );
             hashUserRealm.addUserToRole( "user", "admin" );
+            hashUserRealm.addUserToRole( "user-non-ascii", "admin" );
 
             setUserRealm( hashUserRealm );
             setConstraintMappings( new ConstraintMapping[] { cm } );

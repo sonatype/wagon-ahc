@@ -57,6 +57,14 @@ public class AhcWagon
      */
     private Properties httpHeaders;
 
+    /**
+     * Encoding to use to send credentials to server. RFC 2617 doesn't specify which but for interop with the JRE's HTTP
+     * client as well as Jetty, we default to Latin-1.
+     * 
+     * @plexus.configuration
+     */
+    private String credentialEncoding = "ISO-8859-1";
+
     private AsyncHttpClient httpClient;
 
     @Override
@@ -77,7 +85,7 @@ public class AhcWagon
                 .setPrincipal( username )
                 .setPassword( password )
                 .setUsePreemptiveAuth( false )
-                .setEnconding( "UTF-8" );
+                .setEnconding( credentialEncoding );
             
             builder.setRealm( realmBuilder.build() );
         }        
@@ -107,7 +115,8 @@ public class AhcWagon
                                 
                 if ( proxyUsername != null && proxyPassword != null )
                 {
-                    proxyServer = new ProxyServer( proxyHost, proxyPort, proxyUsername, proxyPassword );                    
+                    proxyServer = new ProxyServer( proxyHost, proxyPort, proxyUsername, proxyPassword );
+                    proxyServer.setEncoding( credentialEncoding );
                 }
                 else
                 {
