@@ -49,6 +49,7 @@ import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.DefaultServlet;
 import org.mortbay.jetty.servlet.ServletHolder;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -1052,6 +1053,49 @@ public abstract class HttpWagonTestCase
             stopTestServer();
 
             srcFile.delete();
+        }
+    }
+
+    public void testPutStream()
+        throws Exception
+    {
+        alert( "\n\nRunning test: " + getName() );
+
+        PutHandler handler = new PutHandler( getRepositoryPath() );
+        handlers = new Handler[] { handler };
+        contexts = new Context[] {};
+
+        // must setup server after handlers are setup
+        setupTestServer();
+
+        setupRepositories();
+
+        setupWagonTestingFixtures();
+
+        String resName = "put-res.txt";
+
+        File dstFile = new File( getRepositoryPath() + "/put", resName );
+        dstFile.mkdirs();
+        dstFile.delete();
+        assertFalse( dstFile.exists() );
+
+        StreamingWagon wagon = (StreamingWagon) getWagon();
+
+        wagon.connect( new Repository( "id", getTestRepositoryUrl() ) );
+
+        try
+        {
+            wagon.putFromStream( new ByteArrayInputStream( "test put".getBytes( "UTF-8" ) ), "put/" + resName );
+
+            assertEquals( "test put", FileUtils.fileRead( dstFile.getAbsolutePath(), "UTF-8" ) );
+        }
+        finally
+        {
+            wagon.disconnect();
+
+            tearDownWagonTestingFixtures();
+
+            stopTestServer();
         }
     }
 

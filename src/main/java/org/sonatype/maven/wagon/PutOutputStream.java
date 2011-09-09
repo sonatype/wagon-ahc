@@ -29,7 +29,7 @@ public class PutOutputStream
 
     public PutOutputStream( BoundRequestBuilder builder, String url, long size )
     {
-        super( (int) size );
+        super( Math.max( (int) size, 1024 * 4 ) );
         this.builder = builder;
         this.url = url;
     }
