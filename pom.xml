@@ -50,12 +50,12 @@ http://www.eclipse.org/legal/epl-v10.html
     <dependency>
       <groupId>com.ning</groupId>
       <artifactId>async-http-client</artifactId>
-      <version>1.6.4</version>
+      <version>1.6.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-api</artifactId>
-      <version>1.0-beta-6</version>
+      <version>1.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -83,7 +83,7 @@ http://www.eclipse.org/legal/epl-v10.html
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-provider-test</artifactId>
-      <version>1.0-beta-6</version>
+      <version>1.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
