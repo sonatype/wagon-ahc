@@ -14,7 +14,7 @@ http://www.eclipse.org/legal/epl-v10.html
   <parent>
     <groupId>org.sonatype.forge</groupId>
     <artifactId>forge-parent</artifactId>
-    <version>6</version>
+    <version>10</version>
   </parent>
 
   <groupId>org.sonatype.maven</groupId>
@@ -26,11 +26,6 @@ http://www.eclipse.org/legal/epl-v10.html
     A wagon provider for HTTP transfers based on the async-http-client.
   </description>
   <inceptionYear>2010</inceptionYear>
-
-  <organization>
-    <name>Sonatype, Inc.</name>
-    <url>http://www.sonatype.com/</url>
-  </organization>
 
   <scm>
     <connection>scm:git:git@github.com:sonatype/wagon-ahc.git</connection>
@@ -101,15 +96,6 @@ http://www.eclipse.org/legal/epl-v10.html
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.3</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -145,8 +131,6 @@ http://www.eclipse.org/legal/epl-v10.html
   </build>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <forgeReleaseUrl>https://repository.sonatype.org/service/local/staging/deploy/maven2</forgeReleaseUrl>
     <surefire.redirectTestOutputToFile>true</surefire.redirectTestOutputToFile>
   </properties>
 </project>
